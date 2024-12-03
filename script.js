@@ -79,7 +79,7 @@ betButtons.forEach(button => {
         selectedBet = this.dataset.bet;
         betButtons.forEach(btn => btn.classList.remove('selected'));
         this.classList.add('selected');
-        betAmount = parseFloat(customBetInput.value) || 50; // Default bet if empty
+        betAmount = parseFloat(customBetInput.value) || 50;
     });
 });
 
