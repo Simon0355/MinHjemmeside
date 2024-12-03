@@ -48,10 +48,27 @@ main {
     margin-bottom: 30px;
 }
 
+.wheel-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
 #roulette-wheel {
     border-radius: 50%;
     border: 8px solid #222;
     margin-bottom: 20px;
+}
+
+.wheel-pointer {
+    position: absolute;
+    bottom: -25px;  /* Positioning the pointer below the wheel */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 20px solid #ff6347; /* Red color for the pointer */
 }
 
 button {
