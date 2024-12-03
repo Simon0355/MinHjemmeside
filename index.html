@@ -3,32 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genialt Roulette</title>
+    <title>Genialt Roulette - Manipulerende Oplevelse</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="app-container">
         <header>
-            <h1>🎉 Genialt Roulette 🎉</h1>
-            <p>Velkommen til den ultimative rouletteoplevelse - spil smart, spil sjovt!</p>
+            <h1 class="title">🎉 Genialt Roulette 🎉</h1>
+            <p class="subtitle">Er du klar til at spille smartere? Skru op for spændingen!</p>
         </header>
 
         <main>
-            <div id="roulette-container">
-                <canvas id="roulette-wheel" width="600" height="600"></canvas>
-            </div>
-
-            <div id="betting-area">
-                <div id="balance-area">Balance: <span id="balance">1000</span> kr</div>
-                <div id="bet-area">
-                    <input type="number" id="bet-amount" placeholder="Indsats" min="1" />
-                    <button class="bet" data-bet="red">Rød</button>
-                    <button class="bet" data-bet="black">Sort</button>
-                    <button class="bet" data-bet="green">Grøn</button>
+            <div id="roulette-container" class="roulette-container">
+                <div class="roulette-wheel" id="wheel"></div>
+                <div class="betting-area">
+                    <div class="balance-info">Balance: <span id="balance">1000</span> kr</div>
+                    <div class="bet-buttons">
+                        <button class="bet-btn" data-bet="red">Rød</button>
+                        <button class="bet-btn" data-bet="black">Sort</button>
+                        <button class="bet-btn" data-bet="green">Grøn</button>
+                    </div>
+                    <button id="spin-button" class="spin-btn">Spin Hjulet</button>
                 </div>
-                <button id="spin-button">Spin Hjulet</button>
             </div>
-            <div id="result-area"></div>
+            <div id="result-area" class="result-area"></div>
         </main>
     </div>
 
