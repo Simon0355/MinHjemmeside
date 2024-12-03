@@ -1,35 +1,46 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roulette</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genialt Roulette</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Velkommen til Roulette</h1>
-        <div id="roulette-container">
-            <div id="roulette-wheel">
-                <div id="wheel-segments"></div>
-                <div id="ball"></div>
-            </div>
-        </div>
+  <div class="game-container">
+    <header>
+      <h1>Genialt Roulette</h1>
+      <p>Vælg din indsats og se hjulet spinne!</p>
+    </header>
 
-        <div id="betting-area">
-            <div id="balance-area">
-                <span>Balance: </span><span id="balance">1000</span>
-            </div>
-            <div id="bet-area">
-                <input type="number" id="bet-amount" placeholder="Indsats" min="1" />
-                <button class="bet" data-bet="red">Rød</button>
-                <button class="bet" data-bet="black">Sort</button>
-                <button class="bet" data-bet="green">Grøn</button>
-            </div>
-            <button id="spin-button">Spin Hjulet</button>
-            <div id="result-area"></div>
-        </div>
+    <div class="betting-area">
+      <div>
+        <label for="bet-amount">Indsatsbeløb:</label>
+        <input type="number" id="bet-amount" placeholder="Sæt beløb">
+      </div>
+      <div>
+        <button class="bet" data-bet="red">Satse på Rød</button>
+        <button class="bet" data-bet="black">Satse på Sort</button>
+        <button class="bet" data-bet="green">Satse på Grøn</button>
+      </div>
     </div>
-    <script src="script.js"></script>
+
+    <div id="roulette-container">
+      <svg id="roulette-wheel" width="400" height="400">
+        <!-- Roulette wheel segments will be dynamically generated here -->
+      </svg>
+      <button id="spin-button">Spin Hjulet!</button>
+    </div>
+
+    <div id="balance">
+      <p>Din balance: <span id="balance-amount">1000</span> Kr.</p>
+    </div>
+
+    <div id="result-area">
+      <p id="result-message"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
