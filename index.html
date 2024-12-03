@@ -3,32 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roulette</title>
+    <title>Futuristisk Roulette</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Velkommen til Roulette</h1>
+        <h1>✨ Roulette af Fremtiden ✨</h1>
         <div id="roulette-container">
-            <div id="roulette-wheel">
-                <div id="wheel-segments"></div>
+            <div id="wheel-container">
+                <canvas id="roulette-wheel"></canvas>
                 <div id="ball"></div>
             </div>
         </div>
 
-        <div id="betting-area">
-            <div id="balance-area">
-                <span>Balance: </span><span id="balance">1000</span>
+        <div id="controls">
+            <div id="balance-display">
+                Balance: <span id="balance">1000</span> 💰
             </div>
-            <div id="bet-area">
-                <input type="number" id="bet-amount" placeholder="Indsats" min="1" />
-                <button class="bet" data-bet="red">Rød</button>
-                <button class="bet" data-bet="black">Sort</button>
-                <button class="bet" data-bet="green">Grøn</button>
+            <input type="number" id="bet-amount" placeholder="Indsats" min="1">
+            <div id="bet-buttons">
+                <button class="bet-option" data-bet="red">Rød 🔴</button>
+                <button class="bet-option" data-bet="black">Sort ⚫</button>
+                <button class="bet-option" data-bet="green">Grøn 🟢</button>
             </div>
-            <button id="spin-button">Spin Hjulet</button>
-            <div id="result-area"></div>
+            <button id="spin-button">Spin Hjulet!</button>
         </div>
+
+        <div id="result-display"></div>
     </div>
     <script src="script.js"></script>
 </body>
