@@ -3,36 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genialt Roulette - Dark Manipulation</title>
+    <title>Roulette</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="wrapper">
-        <header class="main-header">
-            <h1>🎰 Genialt Roulette 🎰</h1>
-            <p class="tagline">Oplev den ultimative roulette-manipulation!</p>
+    <div class="container">
+        <header>
+            <h1>🎰 Roulette 🎰</h1>
+            <div class="balance">
+                <span>Balance: <span id="balance">1000</span> kr</span>
+            </div>
         </header>
 
-        <main class="game-container">
-            <section class="balance">
-                <span>Balance: <span id="balance">1000</span> kr</span>
-            </section>
-
+        <main>
             <section class="wheel-container">
                 <canvas id="roulette-wheel" width="500" height="500"></canvas>
-                <button id="spin-btn" class="spin-btn">Spin Hjulet</button>
+                <button id="spin-btn">Spin Hjulet</button>
             </section>
 
             <section class="bets">
+                <h2>Indsats</h2>
                 <div class="bet-options">
                     <button class="bet-option" data-bet="red">Rød</button>
                     <button class="bet-option" data-bet="black">Sort</button>
-                    <button class="bet-option" data-bet="green">Grøn</button>
+                    <button class="bet-option" data-bet="odd">Lige tal</button>
+                    <button class="bet-option" data-bet="even">Ulige tal</button>
                     <input id="custom-bet" type="number" placeholder="Indsats Beløb" />
                 </div>
             </section>
 
-            <section id="result-area" class="result-area"></section>
+            <section id="result" class="result"></section>
         </main>
     </div>
 
