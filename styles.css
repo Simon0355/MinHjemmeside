@@ -48,6 +48,12 @@ main {
     margin-bottom: 30px;
 }
 
+#roulette-wheel {
+    border-radius: 50%;
+    border: 8px solid #222;
+    margin-bottom: 20px;
+}
+
 button {
     padding: 15px 30px;
     font-size: 1.2rem;
