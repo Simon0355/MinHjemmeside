@@ -49,15 +49,39 @@ function spinWheel() {
     const spins = Math.floor(Math.random() * 5) + 5;
     const deg = Math.floor(Math.random() * 360);
     const rotation = deg + (360 * spins);
-    wheelCanvas.style.transition = "transform 4s ease-out";
+    wheelCanvas.style.transition = 'transform 3s ease-out';
     wheelCanvas.style.transform = `rotate(${rotation}deg)`;
 
-    const stopIndex = Math.floor((deg + 360 * spins) % 360 / spinAmount);
-    const winningNumber = numbers[stopIndex].number;
     setTimeout(() => {
-        resultArea.textContent = `Vindende tal: ${winningNumber}`;
-    }, 4000);
+        checkResult(rotation);
+    }, 3000);
 }
+
+function checkResult(rotation) {
+    const index = Math.floor((rotation % 360) / spinAmount);
+    const result = numbers[index];
+    let message = '';
+    
+    if (selectedBet === result.color || selectedBet === result.number) {
+        balance += betAmount * 2;
+        message = `🎉 Du vandt! Gevinst: ${betAmount * 2} kr! (${result.number}) 🎉`;
+    } else {
+        balance -= betAmount;
+        message = `😞 Du tabte! (Resultat: ${result.number}) 😞`;
+    }
+
+    resultArea.innerHTML = message;
+    balanceElement.innerHTML = balance;
+}
+
+betButtons.forEach(button => {
+    button.addEventListener('click', function () {
+        selectedBet = this.dataset.bet;
+        betButtons.forEach(btn => btn.classList.remove('selected'));
+        this.classList.add('selected');
+        betAmount = parseFloat(customBetInput.value) || 50;
+    });
+});
 
 spinButton.addEventListener('click', function () {
     if (!selectedBet || betAmount <= 0 || betAmount > balance) {
@@ -66,15 +90,6 @@ spinButton.addEventListener('click', function () {
     }
 
     spinWheel();
-});
-
-betButtons.forEach(button => {
-    button.addEventListener('click', function () {
-        betButtons.forEach(btn => btn.classList.remove('selected'));
-        this.classList.add('selected');
-        selectedBet = this.dataset.bet;
-        betAmount = parseFloat(customBetInput.value) || 50;
-    });
 });
 
 drawRouletteWheel();
