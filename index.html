@@ -8,29 +8,37 @@
 </head>
 <body>
     <div class="container">
-        <h1>Velkommen til Roulette</h1>
-        <div id="roulette-container">
-            <div id="roulette-wheel">
-                <div id="wheel-segments"></div>
-                <div id="ball"></div>
-                <div id="arrow"></div> <!-- Pil -->
+        <header>
+            <h1>🎰 Roulette 🎰</h1>
+            <div class="balance">
+                <span>Balance: <span id="balance">1000</span> kr</span>
             </div>
-        </div>
+        </header>
 
-        <div id="betting-area">
-            <div id="balance-area">
-                <span>Balance: </span><span id="balance">1000</span>
-            </div>
-            <div id="bet-area">
-                <input type="number" id="bet-amount" placeholder="Indsats" min="1" />
-                <button class="bet" data-bet="red">Rød</button>
-                <button class="bet" data-bet="black">Sort</button>
-                <button class="bet" data-bet="green">Grøn</button>
-            </div>
-            <button id="spin-button">Spin Hjulet</button>
-            <div id="result-area"></div>
-        </div>
+        <main>
+            <section class="wheel-container">
+                <div class="wheel-wrapper">
+                    <canvas id="roulette-wheel" width="600" height="600"></canvas>
+                    <div id="wheel-pointer" class="wheel-pointer"></div>
+                </div>
+                <button id="spin-btn">Spin Hjulet</button>
+            </section>
+
+            <section class="bets">
+                <h2>Indsats</h2>
+                <div class="bet-options">
+                    <button class="bet-option" data-bet="red">Rød</button>
+                    <button class="bet-option" data-bet="black">Sort</button>
+                    <button class="bet-option" data-bet="odd">Lige tal</button>
+                    <button class="bet-option" data-bet="even">Ulige tal</button>
+                    <input id="custom-bet" type="number" placeholder="Indsats Beløb" />
+                </div>
+            </section>
+
+            <section id="result" class="result"></section>
+        </main>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
