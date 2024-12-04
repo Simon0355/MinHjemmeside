@@ -12,13 +12,13 @@ const ctx = wheelCanvas.getContext('2d');
 
 // Roulette-felter og farver
 const numbers = [
-    { number: 0, color: '#00ff00' }, { number: 32, color: '#ff0000' }, { number: 15, color: '#000000' },
-    { number: 19, color: '#ff0000' }, { number: 4, color: '#000000' }, { number: 21, color: '#ff0000' },
-    { number: 2, color: '#000000' }, { number: 25, color: '#ff0000' }, { number: 17, color: '#000000' },
+    { number: 0, color: '#00ff00' }, { number: 32, color: '#ff0000' }, { number: 15, color: '#000000' }, 
+    { number: 19, color: '#ff0000' }, { number: 4, color: '#000000' }, { number: 21, color: '#ff0000' }, 
+    { number: 2, color: '#000000' }, { number: 25, color: '#ff0000' }, { number: 17, color: '#000000' }, 
     { number: 34, color: '#ff0000' }, { number: 6, color: '#000000' }, { number: 27, color: '#ff0000' },
-    { number: 13, color: '#000000' }, { number: 36, color: '#ff0000' }, { number: 11, color: '#000000' },
+    { number: 13, color: '#000000' }, { number: 36, color: '#ff0000' }, { number: 11, color: '#000000' }, 
     { number: 30, color: '#ff0000' }, { number: 8, color: '#000000' }, { number: 23, color: '#ff0000' },
-    { number: 10, color: '#000000' }, { number: 5, color: '#ff0000' }, { number: 24, color: '#000000' },
+    { number: 10, color: '#000000' }, { number: 5, color: '#ff0000' }, { number: 24, color: '#000000' }, 
     { number: 16, color: '#ff0000' }, { number: 33, color: '#000000' }, { number: 1, color: '#ff0000' }
 ];
 
@@ -78,33 +78,49 @@ function spinWheel() {
         const actualDeg = rotation % 360;
         const index = Math.floor(actualDeg / spinAmount);
         const result = numbers[index];
-        
-        let message = '';
-        if (selectedBet === result.color || selectedBet === result.number) {
-            updateBalance(betAmount * 2); // Spilleren vinder
-            message = `🎉 Du vandt! Gevinst: ${betAmount * 2} kr! (${result.number}) 🎉`;
-        } else {
-            updateBalance(-betAmount); // Spilleren taber
-            message = `😞 Du tabte! (Resultat: ${result.number}) 😞`;
+        resultArea.innerHTML = `Resultat: <strong>${result.number}</strong> (${result.color === '#ff0000' ? 'Rød' : result.color === '#000000' ? 'Sort' : 'Grøn'})`;
+
+        // Tjek indsats og opdater balance
+        let win = false;
+        if ((selectedBet === 'red' && result.color === '#ff0000') ||
+            (selectedBet === 'black' && result.color === '#000000') ||
+            (selectedBet === 'odd' && result.number % 2 !== 0 && result.number !== 0) ||
+            (selectedBet === 'even' && result.number % 2 === 0 && result.number !== 0)) {
+            win = true;
         }
-        
-        resultArea.innerHTML = message;
-    }, 3000); // Vent på, at hjulet stopper
+
+        if (win) {
+            updateBalance(betAmount); // Gevinst (indsatsen fordobles)
+            resultArea.innerHTML += `<br><span style="color: green;">Du vandt ${betAmount} kr!</span>`;
+        } else {
+            updateBalance(-betAmount); // Tab
+            resultArea.innerHTML += `<br><span style="color: red;">Du tabte ${betAmount} kr!</span>`;
+        }
+
+        // Nulstil indsats
+        selectedBet = null;
+        betAmount = 0;
+        betButtons.forEach(btn => btn.classList.remove('selected'));
+        customBetInput.value = '';
+    }, 3000);
 }
 
-// Vælg indsats
+// Håndter valg af indsats
 betButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        selectedBet = button.dataset.bet;
-        betAmount = parseInt(customBetInput.value);
-        
+    button.addEventListener('click', function () {
+        selectedBet = this.dataset.bet;
         betButtons.forEach(btn => btn.classList.remove('selected'));
-        button.classList.add('selected');
+        this.classList.add('selected');
     });
 });
 
-// Spin-knap
+// Håndter indsatsbeløb
+customBetInput.addEventListener('input', function () {
+    betAmount = parseInt(this.value) || 0;
+});
+
+// Start spin
 spinButton.addEventListener('click', spinWheel);
 
-// Initialtegn roulettehjulet
+// Tegn roulettehjulet første gang
 drawRouletteWheel();
