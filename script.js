@@ -1,128 +1,120 @@
-/* Generelle stilarter */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+let balance = 1000; // Startbalance
+let selectedBet = null;
+let betAmount = 0;
+
+const spinButton = document.getElementById('spin-btn');
+const betButtons = document.querySelectorAll('.bet-option');
+const balanceElement = document.getElementById('balance');
+const resultArea = document.getElementById('result');
+const customBetInput = document.getElementById('custom-bet');
+const wheelCanvas = document.getElementById('roulette-wheel');
+const ctx = wheelCanvas.getContext('2d');
+
+// Roulette-felter og farver (Korrekt opsætning)
+const numbers = [
+    { number: 0, color: '#00ff00' }, { number: 32, color: '#ff0000' }, { number: 15, color: '#000000' },
+    { number: 19, color: '#ff0000' }, { number: 4, color: '#000000' }, { number: 21, color: '#ff0000' },
+    { number: 2, color: '#000000' }, { number: 25, color: '#ff0000' }, { number: 17, color: '#000000' },
+    { number: 34, color: '#ff0000' }, { number: 6, color: '#000000' }, { number: 27, color: '#ff0000' },
+    { number: 13, color: '#000000' }, { number: 36, color: '#ff0000' }, { number: 11, color: '#000000' },
+    { number: 30, color: '#ff0000' }, { number: 8, color: '#000000' }, { number: 23, color: '#ff0000' },
+    { number: 10, color: '#000000' }, { number: 5, color: '#ff0000' }, { number: 24, color: '#000000' },
+    { number: 16, color: '#ff0000' }, { number: 33, color: '#000000' }, { number: 1, color: '#ff0000' },
+    { number: 14, color: '#000000' }, { number: 20, color: '#ff0000' }, { number: 17, color: '#000000' }
+];
+
+const spinAmount = 360 / numbers.length; // Vinkel for hvert felt
+
+// Tegn roulettehjulet
+function drawRouletteWheel() {
+    ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+    ctx.translate(wheelCanvas.width / 2, wheelCanvas.height / 2);
+
+    numbers.forEach((item, index) => {
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, wheelCanvas.width / 2, (index * spinAmount) * Math.PI / 180, ((index + 1) * spinAmount) * Math.PI / 180, false);
+        ctx.lineTo(0, 0);
+        ctx.fillStyle = item.color;
+        ctx.fill();
+        ctx.stroke();
+        ctx.save();
+        ctx.rotate(((index + 0.5) * spinAmount) * Math.PI / 180);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '20px Arial';
+        ctx.fillText(item.number, wheelCanvas.width / 2 - 10, -wheelCanvas.height / 4);
+        ctx.restore();
+    });
 }
 
-body {
-    font-family: 'Helvetica Neue', sans-serif;
-    background-color: #1c2541; /* Mørkeblå baggrund */
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
+// Opdater balancen
+function updateBalance(amount) {
+    balance += amount;
+    balanceElement.textContent = balance + " kr";
 }
 
-.container {
-    text-align: center;
-    width: 100%;
-    max-width: 1000px; /* Øget bredde til MacBook-skærme */
-    margin: 0 auto;
+// Spin roulettehjulet
+function spinWheel() {
+    if (betAmount <= 0) {
+        resultArea.innerHTML = '<span style="color: red;">Indtast et beløb at satse!</span>';
+        return;
+    }
+    if (betAmount > balance) {
+        resultArea.innerHTML = '<span style="color: red;">Du har ikke nok penge!</span>';
+        return;
+    }
+
+    const spins = Math.floor(Math.random() * 5) + 5;
+    const deg = Math.floor(Math.random() * 360);
+    const rotation = deg + (360 * spins);
+    wheelCanvas.style.transition = 'transform 3s ease-out';
+    wheelCanvas.style.transform = `rotate(${rotation}deg)`;
+
+    setTimeout(() => {
+        const actualDeg = rotation % 360;
+        const index = Math.floor(actualDeg / spinAmount);
+        const result = numbers[index];
+        resultArea.innerHTML = `Resultat: <strong>${result.number}</strong> (${result.color === '#ff0000' ? 'Rød' : result.color === '#000000' ? 'Sort' : 'Grøn'})`;
+
+        let win = false;
+        if ((selectedBet === 'red' && result.color === '#ff0000') ||
+            (selectedBet === 'black' && result.color === '#000000') ||
+            (selectedBet === 'odd' && result.number % 2 !== 0 && result.number !== 0) ||
+            (selectedBet === 'even' && result.number % 2 === 0 && result.number !== 0)) {
+            win = true;
+        }
+
+        if (win) {
+            updateBalance(betAmount); 
+            resultArea.innerHTML += `<br><span style="color: green;">Du vandt ${betAmount} kr!</span>`;
+        } else {
+            updateBalance(-betAmount); 
+            resultArea.innerHTML += `<br><span style="color: red;">Du tabte ${betAmount} kr!</span>`;
+        }
+
+        selectedBet = null;
+        betAmount = 0;
+        betButtons.forEach(btn => btn.classList.remove('selected'));
+        customBetInput.value = '';
+    }, 3000);
 }
 
-header {
-    margin-bottom: 20px;
-}
+// Håndter valg af indsats
+betButtons.forEach(button => {
+    button.addEventListener('click', function () {
+        selectedBet = this.dataset.bet;
+        betButtons.forEach(btn => btn.classList.remove('selected'));
+        this.classList.add('selected');
+    });
+});
 
-header h1 {
-    font-size: 3rem;
-    color: #ff6347;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
+// Håndter indsatsbeløb
+customBetInput.addEventListener('input', function () {
+    betAmount = parseInt(this.value) || 0;
+});
 
-.balance {
-    font-size: 1.2rem;
-    color: #aaa;
-    margin-top: 10px;
-}
+// Start spin
+spinButton.addEventListener('click', spinWheel);
 
-main {
-    background-color: #1c1c1c;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-    width: 100%;
-    max-width: 900px; /* Max bredde for at sikre god visning på MacBook */
-}
-
-.wheel-container {
-    position: relative;
-    margin-bottom: 30px;
-    width: 100%;
-    max-width: 600px; /* Roulettehjulet tilpasset skærmen */
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#roulette-wheel {
-    border-radius: 50%;
-    border: 8px solid #222;
-    margin-bottom: 20px;
-    max-width: 100%;
-}
-
-.pointer {
-    position: absolute;
-    top: 50%; /* Flyt pilen til bunden af rouletten */
-    left: 50%;
-    transform: translateX(-50%) translateY(-100%);
-    width: 20px;
-    height: 40px;
-    background-color: #f1c40f;
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    z-index: 10;
-}
-
-button {
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #c0392b;
-}
-
-.bet-options {
-    margin-top: 20px;
-}
-
-.bet-option {
-    padding: 12px 25px;
-    background-color: #34495e;
-    font-size: 1.1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.bet-option.selected {
-    background-color: #27ae60;
-    color: white;
-}
-
-input[type="number"] {
-    padding: 10px;
-    margin-top: 15px;
-    width: 150px;
-    font-size: 1rem;
-    text-align: center;
-    border-radius: 5px;
-    border: none;
-}
-
-.result {
-    font-size: 1.5rem;
-    margin-top: 20px;
-    color: #f1c40f;
-}
+// Tegn roulettehjulet første gang
+drawRouletteWheel();
