@@ -2,81 +2,56 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #222;
-    color: white;
-    padding: 20px;
+    color: #fff;
+    margin: 0;
+    padding: 0;
 }
 
-#wheelContainer {
-    margin: 20px auto;
-    width: 300px;
-    height: 300px;
+.wheel-container {
     position: relative;
+    display: inline-block;
+    margin-top: 50px;
 }
 
-#wheel {
-    width: 100%;
-    height: 100%;
+#roulette-wheel {
+    background-color: #000;
     border-radius: 50%;
-    border: 5px solid white;
-    position: relative;
-    background: conic-gradient(
-        red 0deg 9.73deg, black 9.73deg 19.45deg,
-        red 19.45deg 29.18deg, black 29.18deg 38.91deg,
-        red 38.91deg 48.64deg, black 48.64deg 58.36deg,
-        red 58.36deg 68.09deg, black 68.09deg 77.82deg,
-        red 77.82deg 87.55deg, black 87.55deg 97.27deg,
-        red 97.27deg 106.99deg, black 106.99deg 116.72deg,
-        red 116.72deg 126.45deg, black 126.45deg 136.18deg,
-        red 136.18deg 145.91deg, black 145.91deg 155.63deg,
-        red 155.63deg 165.36deg, black 165.36deg 175.09deg,
-        green 175.09deg 184.81deg, red 184.81deg 194.54deg,
-        black 194.54deg 204.27deg, red 204.27deg 214deg,
-        black 214deg 223.72deg, red 223.72deg 233.45deg,
-        black 233.45deg 243.18deg, red 243.18deg 252.91deg,
-        black 252.91deg 262.63deg, red 262.63deg 272.36deg,
-        black 272.36deg 282.09deg, red 282.09deg 291.82deg,
-        black 291.82deg 301.54deg, red 301.54deg 311.27deg,
-        black 311.27deg 321deg, red 321deg 330.72deg,
-        black 330.72deg 340.45deg, red 340.45deg 350.18deg,
-        black 350.18deg 360deg
-    );
+    border: 5px solid #fff;
 }
 
-#pointer {
-    width: 10px;
-    height: 30px;
-    background: yellow;
+.pointer {
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 30px solid #ff6347; /* Rød pil */
     position: absolute;
-    top: -10px;
-    left: 145px;
-    z-index: 1;
+    bottom: -20px; /* Flytter pilen under hjulet */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
 }
 
 button {
-    margin: 10px;
-    padding: 10px 20px;
-    background-color: #555;
+    background-color: #444;
+    color: #fff;
     border: none;
-    color: white;
-    font-size: 16px;
+    padding: 10px 20px;
+    margin: 5px;
     cursor: pointer;
     border-radius: 5px;
 }
 
 button:hover {
-    background-color: #888;
+    background-color: #555;
 }
 
-input {
-    width: 100px;
-    padding: 5px;
-    font-size: 16px;
-}
-
-.bet-buttons {
+.controls {
     margin: 20px;
 }
 
-.bet-buttons button {
-    margin: 5px;
+#result-area {
+    margin-top: 20px;
+    font-size: 20px;
 }
+
