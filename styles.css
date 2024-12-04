@@ -7,20 +7,18 @@
 
 body {
     font-family: 'Helvetica Neue', sans-serif;
-    background-color: #1c2541; /* Mørkeblå baggrund */
+    background-color: #121212;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    overflow: hidden;
 }
 
 .container {
     text-align: center;
+    max-width: 800px;
     width: 100%;
-    max-width: 1000px; /* Øget bredde til MacBook-skærme */
-    margin: 0 auto;
 }
 
 header {
@@ -45,31 +43,24 @@ main {
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-    width: 100%;
-    max-width: 900px; /* Max bredde for at sikre god visning på MacBook */
 }
 
 .wheel-container {
     position: relative;
     margin-bottom: 30px;
-    width: 100%;
-    max-width: 600px; /* Roulettehjulet tilpasset skærmen */
-    margin-left: auto;
-    margin-right: auto;
 }
 
 #roulette-wheel {
     border-radius: 50%;
     border: 8px solid #222;
     margin-bottom: 20px;
-    max-width: 100%;
 }
 
 .pointer {
     position: absolute;
-    top: 50%; /* Flyt pilen til bunden af rouletten */
+    top: 8%;
     left: 50%;
-    transform: translateX(-50%) translateY(-100%);
+    transform: translateX(-50%);
     width: 20px;
     height: 40px;
     background-color: #f1c40f;
