@@ -1,4 +1,4 @@
-let balance = 1000;
+let balance = 1000; // Startbalance
 let selectedBet = null;
 let betAmount = 0;
 
@@ -10,21 +10,24 @@ const customBetInput = document.getElementById('custom-bet');
 const wheelCanvas = document.getElementById('roulette-wheel');
 const ctx = wheelCanvas.getContext('2d');
 
-const colors = ['#ff0000', '#000000']; // Red and Black
+// Roulette-felter og farver
 const numbers = [
-    { number: 0, color: '#00ff00' }, { number: 32, color: '#ff0000' }, { number: 15, color: '#000000' }, { number: 19, color: '#ff0000' },
-    { number: 4, color: '#000000' }, { number: 21, color: '#ff0000' }, { number: 2, color: '#000000' }, { number: 25, color: '#ff0000' },
-    { number: 17, color: '#000000' }, { number: 34, color: '#ff0000' }, { number: 6, color: '#000000' }, { number: 27, color: '#ff0000' },
-    { number: 13, color: '#000000' }, { number: 36, color: '#ff0000' }, { number: 11, color: '#000000' }, { number: 30, color: '#ff0000' },
-    { number: 8, color: '#000000' }, { number: 23, color: '#ff0000' }, { number: 10, color: '#000000' }, { number: 5, color: '#ff0000' },
-    { number: 24, color: '#000000' }, { number: 16, color: '#ff0000' }, { number: 33, color: '#000000' }, { number: 1, color: '#ff0000' }
+    { number: 0, color: '#00ff00' }, { number: 32, color: '#ff0000' }, { number: 15, color: '#000000' }, 
+    { number: 19, color: '#ff0000' }, { number: 4, color: '#000000' }, { number: 21, color: '#ff0000' }, 
+    { number: 2, color: '#000000' }, { number: 25, color: '#ff0000' }, { number: 17, color: '#000000' }, 
+    { number: 34, color: '#ff0000' }, { number: 6, color: '#000000' }, { number: 27, color: '#ff0000' },
+    { number: 13, color: '#000000' }, { number: 36, color: '#ff0000' }, { number: 11, color: '#000000' }, 
+    { number: 30, color: '#ff0000' }, { number: 8, color: '#000000' }, { number: 23, color: '#ff0000' },
+    { number: 10, color: '#000000' }, { number: 5, color: '#ff0000' }, { number: 24, color: '#000000' }, 
+    { number: 16, color: '#ff0000' }, { number: 33, color: '#000000' }, { number: 1, color: '#ff0000' }
 ];
 
-const spinAmount = 360 / numbers.length;
+const spinAmount = 360 / numbers.length; // Vinkel for hvert felt
 
+// Tegn roulettehjulet
 function drawRouletteWheel() {
     ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
-    ctx.translate(wheelCanvas.width / 2, wheelCanvas.height / 2); // Center the canvas
+    ctx.translate(wheelCanvas.width / 2, wheelCanvas.height / 2);
 
     numbers.forEach((item, index) => {
         ctx.beginPath();
@@ -34,62 +37,90 @@ function drawRouletteWheel() {
         ctx.fill();
     });
 
-    ctx.fillStyle = '#fff';
     ctx.font = '16px Arial';
+    ctx.fillStyle = '#fff';
     numbers.forEach((item, index) => {
         ctx.save();
-        ctx.rotate((spinAmount * index) * Math.PI / 180);
-        ctx.translate(0, -180);
+        ctx.rotate((spinAmount * index + spinAmount / 2) * Math.PI / 180);
+        ctx.translate(0, -200);
         ctx.fillText(item.number, -10, 0);
         ctx.restore();
     });
+    ctx.translate(-wheelCanvas.width / 2, -wheelCanvas.height / 2);
 }
 
+// Opdater balancen
+function updateBalance(amount) {
+    balance += amount;
+    balanceElement.textContent = balance;
+}
+
+// Spin hjulet
 function spinWheel() {
-    const spins = Math.floor(Math.random() * 5) + 5;
-    const deg = Math.floor(Math.random() * 360);
+    if (!selectedBet || !betAmount) {
+        resultArea.innerHTML = `<span style="color: red;">Vælg en indsats og beløb!</span>`;
+        return;
+    }
+    if (betAmount > balance) {
+        resultArea.innerHTML = `<span style="color: red;">Ikke nok balance!</span>`;
+        return;
+    }
+
+    const spins = Math.floor(Math.random() * 5) + 5; // Antal fulde spins
+    const deg = Math.floor(Math.random() * 360); // Slutposition
     const rotation = deg + (360 * spins);
+
     wheelCanvas.style.transition = 'transform 3s ease-out';
     wheelCanvas.style.transform = `rotate(${rotation}deg)`;
 
+    // Udregn resultat
     setTimeout(() => {
-        checkResult(rotation);
+        const actualDeg = rotation % 360;
+        const index = Math.floor(actualDeg / spinAmount);
+        const result = numbers[index];
+        resultArea.innerHTML = `Resultat: <strong>${result.number}</strong> (${result.color === '#ff0000' ? 'Rød' : result.color === '#000000' ? 'Sort' : 'Grøn'})`;
+
+        // Tjek indsats og opdater balance
+        let win = false;
+        if ((selectedBet === 'red' && result.color === '#ff0000') ||
+            (selectedBet === 'black' && result.color === '#000000') ||
+            (selectedBet === 'odd' && result.number % 2 !== 0 && result.number !== 0) ||
+            (selectedBet === 'even' && result.number % 2 === 0 && result.number !== 0)) {
+            win = true;
+        }
+
+        if (win) {
+            updateBalance(betAmount); // Gevinst (indsatsen fordobles)
+            resultArea.innerHTML += `<br><span style="color: green;">Du vandt ${betAmount} kr!</span>`;
+        } else {
+            updateBalance(-betAmount); // Tab
+            resultArea.innerHTML += `<br><span style="color: red;">Du tabte ${betAmount} kr!</span>`;
+        }
+
+        // Nulstil indsats
+        selectedBet = null;
+        betAmount = 0;
+        betButtons.forEach(btn => btn.classList.remove('selected'));
+        customBetInput.value = '';
     }, 3000);
 }
 
-function checkResult(rotation) {
-    const index = Math.floor((rotation % 360) / spinAmount);
-    const result = numbers[index];
-    let message = '';
-    
-    if (selectedBet === result.color || selectedBet === result.number) {
-        balance += betAmount * 2;
-        message = `🎉 Du vandt! Gevinst: ${betAmount * 2} kr! (${result.number}) 🎉`;
-    } else {
-        balance -= betAmount;
-        message = `😞 Du tabte! (Resultat: ${result.number}) 😞`;
-    }
-
-    resultArea.innerHTML = message;
-    balanceElement.innerHTML = balance;
-}
-
+// Håndter valg af indsats
 betButtons.forEach(button => {
     button.addEventListener('click', function () {
         selectedBet = this.dataset.bet;
         betButtons.forEach(btn => btn.classList.remove('selected'));
         this.classList.add('selected');
-        betAmount = parseFloat(customBetInput.value) || 50;
     });
 });
 
-spinButton.addEventListener('click', function () {
-    if (!selectedBet || betAmount <= 0 || betAmount > balance) {
-        alert("Vælg en indsats og sørg for, at du har penge nok.");
-        return;
-    }
-
-    spinWheel();
+// Håndter indsatsbeløb
+customBetInput.addEventListener('input', function () {
+    betAmount = parseInt(this.value) || 0;
 });
 
+// Start spin
+spinButton.addEventListener('click', spinWheel);
+
+// Tegn roulettehjulet første gang
 drawRouletteWheel();
