@@ -1,110 +1,82 @@
 body {
     font-family: Arial, sans-serif;
+    text-align: center;
     background-color: #222;
     color: white;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+    padding: 20px;
 }
 
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding-top: 50px;
-}
-
-.roulette {
+#wheelContainer {
+    margin: 20px auto;
+    width: 300px;
+    height: 300px;
     position: relative;
-    margin-bottom: 30px;
 }
 
-.wheel-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 20px;
-}
-
-.wheel {
-    position: relative;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    border: 5px solid #333;
-    background: conic-gradient(
-        red 0deg 18deg, 
-        black 18deg 36deg, 
-        red 36deg 54deg, 
-        black 54deg 72deg,
-        red 72deg 90deg, 
-        black 90deg 108deg, 
-        red 108deg 126deg, 
-        black 126deg 144deg,
-        red 144deg 162deg, 
-        black 162deg 180deg,
-        red 180deg 198deg, 
-        black 198deg 216deg,
-        red 216deg 234deg, 
-        black 234deg 252deg,
-        red 252deg 270deg, 
-        black 270deg 288deg,
-        red 288deg 306deg, 
-        black 306deg 324deg,
-        red 324deg 342deg, 
-        black 342deg 360deg
-    );
-    transform-origin: 50% 50%;
-}
-
-.numbers {
-    position: absolute;
-    top: 0;
-    left: 0;
+#wheel {
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    transform: rotate(-9deg);
+    border-radius: 50%;
+    border: 5px solid white;
+    position: relative;
+    background: conic-gradient(
+        red 0deg 9.73deg, black 9.73deg 19.45deg,
+        red 19.45deg 29.18deg, black 29.18deg 38.91deg,
+        red 38.91deg 48.64deg, black 48.64deg 58.36deg,
+        red 58.36deg 68.09deg, black 68.09deg 77.82deg,
+        red 77.82deg 87.55deg, black 87.55deg 97.27deg,
+        red 97.27deg 106.99deg, black 106.99deg 116.72deg,
+        red 116.72deg 126.45deg, black 126.45deg 136.18deg,
+        red 136.18deg 145.91deg, black 145.91deg 155.63deg,
+        red 155.63deg 165.36deg, black 165.36deg 175.09deg,
+        green 175.09deg 184.81deg, red 184.81deg 194.54deg,
+        black 194.54deg 204.27deg, red 204.27deg 214deg,
+        black 214deg 223.72deg, red 223.72deg 233.45deg,
+        black 233.45deg 243.18deg, red 243.18deg 252.91deg,
+        black 252.91deg 262.63deg, red 262.63deg 272.36deg,
+        black 272.36deg 282.09deg, red 282.09deg 291.82deg,
+        black 291.82deg 301.54deg, red 301.54deg 311.27deg,
+        black 311.27deg 321deg, red 321deg 330.72deg,
+        black 330.72deg 340.45deg, red 340.45deg 350.18deg,
+        black 350.18deg 360deg
+    );
 }
 
-.number {
+#pointer {
+    width: 10px;
+    height: 30px;
+    background: yellow;
     position: absolute;
-    transform-origin: 50% 0;
-    font-size: 16px;
-    color: #fff;
-    font-weight: bold;
-}
-
-.arrow {
-    position: absolute;
-    top: 400px;
-    left: 50%;
-    margin-left: -10px;
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 20px solid #FFD700;
+    top: -10px;
+    left: 145px;
+    z-index: 1;
 }
 
 button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
     margin: 10px;
-    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #555;
+    border: none;
+    color: white;
     font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #888;
 }
 
 input {
+    width: 100px;
     padding: 5px;
     font-size: 16px;
-    margin-top: 10px;
-    width: 80px;
+}
+
+.bet-buttons {
+    margin: 20px;
+}
+
+.bet-buttons button {
+    margin: 5px;
 }
