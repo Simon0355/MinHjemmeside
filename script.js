@@ -1,146 +1,110 @@
-const wheelCanvas = document.getElementById("roulette-wheel");
-const ctx = wheelCanvas.getContext("2d");
-const spinBtn = document.getElementById("spin-btn");
-const resultArea = document.getElementById("result-area");
-const balanceElement = document.getElementById("balance");
-const betAmountInput = document.getElementById("bet-amount");
-const betRedBtn = document.getElementById("bet-red");
-const betBlackBtn = document.getElementById("bet-black");
-const betEvenBtn = document.getElementById("bet-even");
-const betOddBtn = document.getElementById("bet-odd");
+let balance = 1000; // Startbalance
+let selectedBet = null;
+let betAmount = 0;
 
-let balance = 1000; // Start balance
-let betAmount = 0; // Indsats
-let selectedBet = null; // Hvad spilleren satser på
+const spinButton = document.getElementById('spin-btn');
+const betButtons = document.querySelectorAll('.bet-option');
+const balanceElement = document.getElementById('balance');
+const resultArea = document.getElementById('result');
+const customBetInput = document.getElementById('custom-bet');
+const wheelCanvas = document.getElementById('roulette-wheel');
+const ctx = wheelCanvas.getContext('2d');
 
-// Roulletnumre med farver (for hvert nummer defineres farven)
+// Roulette-felter og farver
 const numbers = [
-    { number: 0, color: "green" },
-    { number: 1, color: "red" },
-    { number: 2, color: "black" },
-    { number: 3, color: "red" },
-    { number: 4, color: "black" },
-    { number: 5, color: "red" },
-    { number: 6, color: "black" },
-    { number: 7, color: "red" },
-    { number: 8, color: "black" },
-    { number: 9, color: "red" },
-    { number: 10, color: "black" },
-    { number: 11, color: "black" },
-    { number: 12, color: "red" },
-    { number: 13, color: "black" },
-    { number: 14, color: "red" },
-    { number: 15, color: "black" },
-    { number: 16, color: "red" },
-    { number: 17, color: "black" },
-    { number: 18, color: "red" },
-    { number: 19, color: "red" },
-    { number: 20, color: "black" },
-    { number: 21, color: "red" },
-    { number: 22, color: "black" },
-    { number: 23, color: "red" },
-    { number: 24, color: "black" },
-    { number: 25, color: "red" },
-    { number: 26, color: "black" },
-    { number: 27, color: "red" },
-    { number: 28, color: "black" },
-    { number: 29, color: "black" },
-    { number: 30, color: "red" },
-    { number: 31, color: "black" },
-    { number: 32, color: "red" },
-    { number: 33, color: "black" },
-    { number: 34, color: "red" },
-    { number: 35, color: "black" },
-    { number: 36, color: "red" },
+    { number: 0, color: '#00ff00' }, { number: 32, color: '#ff0000' }, { number: 15, color: '#000000' },
+    { number: 19, color: '#ff0000' }, { number: 4, color: '#000000' }, { number: 21, color: '#ff0000' },
+    { number: 2, color: '#000000' }, { number: 25, color: '#ff0000' }, { number: 17, color: '#000000' },
+    { number: 34, color: '#ff0000' }, { number: 6, color: '#000000' }, { number: 27, color: '#ff0000' },
+    { number: 13, color: '#000000' }, { number: 36, color: '#ff0000' }, { number: 11, color: '#000000' },
+    { number: 30, color: '#ff0000' }, { number: 8, color: '#000000' }, { number: 23, color: '#ff0000' },
+    { number: 10, color: '#000000' }, { number: 5, color: '#ff0000' }, { number: 24, color: '#000000' },
+    { number: 16, color: '#ff0000' }, { number: 33, color: '#000000' }, { number: 1, color: '#ff0000' }
 ];
 
-const spinAmount = 360 / numbers.length; // Antal grader pr. segment
+const spinAmount = 360 / numbers.length; // Vinkel for hvert felt
 
+// Tegn roulettehjulet
 function drawRouletteWheel() {
-    const centerX = wheelCanvas.width / 2;
-    const centerY = wheelCanvas.height / 2;
-    const radius = 230;
-
     ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+    ctx.translate(wheelCanvas.width / 2, wheelCanvas.height / 2);
 
     numbers.forEach((item, index) => {
-        const startAngle = index * (2 * Math.PI / numbers.length);
-        const endAngle = (index + 1) * (2 * Math.PI / numbers.length);
-
         ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-        ctx.closePath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, 230, (spinAmount * index) * Math.PI / 180, (spinAmount * (index + 1)) * Math.PI / 180);
         ctx.fillStyle = item.color;
         ctx.fill();
     });
 
+    ctx.font = '16px Arial';
+    ctx.fillStyle = '#fff';
     numbers.forEach((item, index) => {
-        const angle = (index + 0.5) * (2 * Math.PI / numbers.length);
-        const textX = centerX + (radius - 40) * Math.cos(angle);
-        const textY = centerY + (radius - 40) * Math.sin(angle);
-
-        ctx.fillStyle = "#fff";
-        ctx.font = "bold 16px Arial";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(item.number, textX, textY);
+        ctx.save();
+        ctx.rotate((spinAmount * index + spinAmount / 2) * Math.PI / 180);
+        ctx.translate(0, -200);
+        ctx.fillText(item.number, -10, 0);
+        ctx.restore();
     });
+    ctx.translate(-wheelCanvas.width / 2, -wheelCanvas.height / 2);
 }
 
+// Opdater balancen
+function updateBalance(amount) {
+    balance += amount;
+    balanceElement.textContent = balance;
+}
+
+// Spin hjulet
 function spinWheel() {
-    const spins = Math.floor(Math.random() * 5) + 5;
-    const deg = Math.floor(Math.random() * 360);
+    if (!selectedBet || !betAmount) {
+        resultArea.innerHTML = `<span style="color: red;">Vælg en indsats og beløb!</span>`;
+        return;
+    }
+    if (betAmount > balance) {
+        resultArea.innerHTML = `<span style="color: red;">Ikke nok balance!</span>`;
+        return;
+    }
+
+    const spins = Math.floor(Math.random() * 5) + 5; // Antal fulde spins
+    const deg = Math.floor(Math.random() * 360); // Slutposition
     const rotation = deg + (360 * spins);
+
     wheelCanvas.style.transition = 'transform 3s ease-out';
     wheelCanvas.style.transform = `rotate(${rotation}deg)`;
 
+    // Udregn resultat
     setTimeout(() => {
-        checkResult(rotation);
-    }, 3000);
+        const actualDeg = rotation % 360;
+        const index = Math.floor(actualDeg / spinAmount);
+        const result = numbers[index];
+        
+        let message = '';
+        if (selectedBet === result.color || selectedBet === result.number) {
+            updateBalance(betAmount * 2); // Spilleren vinder
+            message = `🎉 Du vandt! Gevinst: ${betAmount * 2} kr! (${result.number}) 🎉`;
+        } else {
+            updateBalance(-betAmount); // Spilleren taber
+            message = `😞 Du tabte! (Resultat: ${result.number}) 😞`;
+        }
+        
+        resultArea.innerHTML = message;
+    }, 3000); // Vent på, at hjulet stopper
 }
 
-function checkResult(rotation) {
-    const adjustedRotation = (rotation % 360) + spinAmount / 2;
-    const index = Math.floor(adjustedRotation / spinAmount) % numbers.length;
-    const result = numbers[index];
-
-    let message = '';
-    if (selectedBet === result.color || selectedBet === result.number) {
-        balance += betAmount * 2;
-        message = `🎉 Du vandt! Gevinst: ${betAmount * 2} kr! (${result.number}) 🎉`;
-    } else {
-        balance -= betAmount;
-        message = `😞 Du tabte! (Resultat: ${result.number}) 😞`;
-    }
-
-    resultArea.innerHTML = message;
-    balanceElement.innerHTML = balance;
-}
-
-// Bet buttons
-betRedBtn.addEventListener("click", () => {
-    selectedBet = "red";
-    betAmount = parseInt(betAmountInput.value);
+// Vælg indsats
+betButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        selectedBet = button.dataset.bet;
+        betAmount = parseInt(customBetInput.value);
+        
+        betButtons.forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+    });
 });
 
-betBlackBtn.addEventListener("click", () => {
-    selectedBet = "black";
-    betAmount = parseInt(betAmountInput.value);
-});
+// Spin-knap
+spinButton.addEventListener('click', spinWheel);
 
-betEvenBtn.addEventListener("click", () => {
-    selectedBet = "even";
-    betAmount = parseInt(betAmountInput.value);
-});
-
-betOddBtn.addEventListener("click", () => {
-    selectedBet = "odd";
-    betAmount = parseInt(betAmountInput.value);
-});
-
-// Spin button
-spinBtn.addEventListener("click", spinWheel);
-
-// Initial wheel drawing
+// Initialtegn roulettehjulet
 drawRouletteWheel();
