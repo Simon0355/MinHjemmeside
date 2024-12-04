@@ -1,42 +1,26 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roulette</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🎰 Roulette 🎰</h1>
-            <div class="balance">
-                <span>Balance: <span id="balance">1000</span> kr</span>
-            </div>
-        </header>
-
-        <main>
-            <section class="wheel-container">
-                <div class="pointer"></div>
-                <canvas id="roulette-wheel" width="600" height="600"></canvas>
-                <button id="spin-btn">Spin Hjulet</button>
-            </section>
-
-            <section class="bets">
-                <h2>Indsats</h2>
-                <div class="bet-options">
-                    <button class="bet-option" data-bet="red">Rød</button>
-                    <button class="bet-option" data-bet="black">Sort</button>
-                    <button class="bet-option" data-bet="odd">Lige tal</button>
-                    <button class="bet-option" data-bet="even">Ulige tal</button>
-                    <input id="custom-bet" type="number" placeholder="Indsats Beløb" />
-                </div>
-            </section>
-
-            <section id="result" class="result"></section>
-        </main>
+    <section class="wheel-container">
+        <canvas id="roulette-wheel" width="600" height="600"></canvas>
+        <div class="pointer"></div> <!-- Pilen -->
+        <button id="spin-btn">Spin Hjulet</button>
+    </section>
+    <div class="controls">
+        <p>Balance: <span id="balance">1000</span> kr</p>
+        <p>Indsats: <input type="number" id="bet-amount" value="100" min="0"> kr</p>
+        <button id="bet-red">Rød</button>
+        <button id="bet-black">Sort</button>
+        <button id="bet-even">Lige tal</button>
+        <button id="bet-odd">Ulige tal</button>
     </div>
-
+    <div id="result-area"></div>
     <script src="script.js"></script>
 </body>
 </html>
