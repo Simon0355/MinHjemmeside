@@ -12,13 +12,13 @@ const ctx = wheelCanvas.getContext('2d');
 
 // Roulette-felter og farver
 const numbers = [
-    { number: 0, color: '#00ff00' }, { number: 32, color: '#ff0000' }, { number: 15, color: '#000000' }, 
-    { number: 19, color: '#ff0000' }, { number: 4, color: '#000000' }, { number: 21, color: '#ff0000' }, 
-    { number: 2, color: '#000000' }, { number: 25, color: '#ff0000' }, { number: 17, color: '#000000' }, 
+    { number: 0, color: '#00ff00' }, { number: 32, color: '#ff0000' }, { number: 15, color: '#000000' },
+    { number: 19, color: '#ff0000' }, { number: 4, color: '#000000' }, { number: 21, color: '#ff0000' },
+    { number: 2, color: '#000000' }, { number: 25, color: '#ff0000' }, { number: 17, color: '#000000' },
     { number: 34, color: '#ff0000' }, { number: 6, color: '#000000' }, { number: 27, color: '#ff0000' },
-    { number: 13, color: '#000000' }, { number: 36, color: '#ff0000' }, { number: 11, color: '#000000' }, 
+    { number: 13, color: '#000000' }, { number: 36, color: '#ff0000' }, { number: 11, color: '#000000' },
     { number: 30, color: '#ff0000' }, { number: 8, color: '#000000' }, { number: 23, color: '#ff0000' },
-    { number: 10, color: '#000000' }, { number: 5, color: '#ff0000' }, { number: 24, color: '#000000' }, 
+    { number: 10, color: '#000000' }, { number: 5, color: '#ff0000' }, { number: 24, color: '#000000' },
     { number: 16, color: '#ff0000' }, { number: 33, color: '#000000' }, { number: 1, color: '#ff0000' }
 ];
 
