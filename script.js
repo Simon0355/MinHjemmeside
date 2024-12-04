@@ -53,35 +53,32 @@ function drawRouletteWheel() {
 // Opdater balancen
 function updateBalance(amount) {
     balance += amount;
-    balanceElement.textContent = balance;
+    balanceElement.textContent = balance + " kr";
 }
 
-// Spin hjulet
+// Spin roulettehjulet
 function spinWheel() {
-    if (!selectedBet || !betAmount) {
-        resultArea.innerHTML = `<span style="color: red;">Vælg en indsats og beløb!</span>`;
+    if (betAmount <= 0) {
+        resultArea.innerHTML = '<span style="color: red;">Indtast et beløb at satse!</span>';
         return;
     }
     if (betAmount > balance) {
-        resultArea.innerHTML = `<span style="color: red;">Ikke nok balance!</span>`;
+        resultArea.innerHTML = '<span style="color: red;">Du har ikke nok penge!</span>';
         return;
     }
 
-    const spins = Math.floor(Math.random() * 5) + 5; // Antal fulde spins
+    const spins = Math.floor(Math.random() * 5) + 5; // Antal spins
     const deg = Math.floor(Math.random() * 360); // Slutposition
     const rotation = deg + (360 * spins);
-
     wheelCanvas.style.transition = 'transform 3s ease-out';
     wheelCanvas.style.transform = `rotate(${rotation}deg)`;
 
-    // Udregn resultat
     setTimeout(() => {
         const actualDeg = rotation % 360;
         const index = Math.floor(actualDeg / spinAmount);
         const result = numbers[index];
         resultArea.innerHTML = `Resultat: <strong>${result.number}</strong> (${result.color === '#ff0000' ? 'Rød' : result.color === '#000000' ? 'Sort' : 'Grøn'})`;
 
-        // Tjek indsats og opdater balance
         let win = false;
         if ((selectedBet === 'red' && result.color === '#ff0000') ||
             (selectedBet === 'black' && result.color === '#000000') ||
@@ -91,14 +88,13 @@ function spinWheel() {
         }
 
         if (win) {
-            updateBalance(betAmount); // Gevinst (indsatsen fordobles)
+            updateBalance(betAmount); 
             resultArea.innerHTML += `<br><span style="color: green;">Du vandt ${betAmount} kr!</span>`;
         } else {
-            updateBalance(-betAmount); // Tab
+            updateBalance(-betAmount); 
             resultArea.innerHTML += `<br><span style="color: red;">Du tabte ${betAmount} kr!</span>`;
         }
 
-        // Nulstil indsats
         selectedBet = null;
         betAmount = 0;
         betButtons.forEach(btn => btn.classList.remove('selected'));
