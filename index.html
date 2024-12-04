@@ -1,76 +1,112 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roulette Spil</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Roulette</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #222;
+            color: white;
+            padding: 20px;
+        }
+
+        #wheelContainer {
+            margin: 20px auto;
+            width: 300px;
+            height: 300px;
+            position: relative;
+        }
+
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid white;
+            position: relative;
+            background: conic-gradient(
+                red 0deg 9.73deg, black 9.73deg 19.45deg,
+                red 19.45deg 29.18deg, black 29.18deg 38.91deg,
+                red 38.91deg 48.64deg, black 48.64deg 58.36deg,
+                red 58.36deg 68.09deg, black 68.09deg 77.82deg,
+                red 77.82deg 87.55deg, black 87.55deg 97.27deg,
+                red 97.27deg 106.99deg, black 106.99deg 116.72deg,
+                red 116.72deg 126.45deg, black 126.45deg 136.18deg,
+                red 136.18deg 145.91deg, black 145.91deg 155.63deg,
+                red 155.63deg 165.36deg, black 165.36deg 175.09deg,
+                green 175.09deg 184.81deg, red 184.81deg 194.54deg,
+                black 194.54deg 204.27deg, red 204.27deg 214deg,
+                black 214deg 223.72deg, red 223.72deg 233.45deg,
+                black 233.45deg 243.18deg, red 243.18deg 252.91deg,
+                black 252.91deg 262.63deg, red 262.63deg 272.36deg,
+                black 272.36deg 282.09deg, red 282.09deg 291.82deg,
+                black 291.82deg 301.54deg, red 301.54deg 311.27deg,
+                black 311.27deg 321deg, red 321deg 330.72deg,
+                black 330.72deg 340.45deg, red 340.45deg 350.18deg,
+                black 350.18deg 360deg
+            );
+        }
+
+        #pointer {
+            width: 10px;
+            height: 30px;
+            background: yellow;
+            position: absolute;
+            top: -10px;
+            left: 145px;
+            z-index: 1;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #555;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #888;
+        }
+
+        input {
+            width: 100px;
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        .bet-buttons {
+            margin: 20px;
+        }
+
+        .bet-buttons button {
+            margin: 5px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Roulette</h1>
-        <div id="balance">Balance: 1000 kr</div>
-        
-        <div class="roulette">
-            <div class="wheel-container">
-                <div class="wheel" id="wheel">
-                    <div class="arrow"></div>
-                    <div class="numbers">
-                        <!-- Placering af tallene -->
-                        <div class="number" data-number="0">0</div>
-                        <div class="number" data-number="32">32</div>
-                        <div class="number" data-number="15">15</div>
-                        <div class="number" data-number="19">19</div>
-                        <div class="number" data-number="4">4</div>
-                        <div class="number" data-number="21">21</div>
-                        <div class="number" data-number="2">2</div>
-                        <div class="number" data-number="25">25</div>
-                        <div class="number" data-number="17">17</div>
-                        <div class="number" data-number="34">34</div>
-                        <div class="number" data-number="6">6</div>
-                        <div class="number" data-number="27">27</div>
-                        <div class="number" data-number="13">13</div>
-                        <div class="number" data-number="36">36</div>
-                        <div class="number" data-number="11">11</div>
-                        <div class="number" data-number="30">30</div>
-                        <div class="number" data-number="8">8</div>
-                        <div class="number" data-number="23">23</div>
-                        <div class="number" data-number="10">10</div>
-                        <div class="number" data-number="5">5</div>
-                        <div class="number" data-number="24">24</div>
-                        <div class="number" data-number="16">16</div>
-                        <div class="number" data-number="33">33</div>
-                        <div class="number" data-number="1">1</div>
-                        <div class="number" data-number="20">20</div>
-                        <div class="number" data-number="14">14</div>
-                        <div class="number" data-number="31">31</div>
-                        <div class="number" data-number="9">9</div>
-                        <div class="number" data-number="22">22</div>
-                        <div class="number" data-number="18">18</div>
-                        <div class="number" data-number="29">29</div>
-                        <div class="number" data-number="7">7</div>
-                        <div class="number" data-number="28">28</div>
-                        <div class="number" data-number="12">12</div>
-                        <div class="number" data-number="35">35</div>
-                        <div class="number" data-number="3">3</div>
-                        <div class="number" data-number="26">26</div>
-                    </div>
-                </div>
-                <button id="spinButton">Spin Hjulet</button>
-            </div>
-        </div>
-
-        <div class="bets">
-            <label for="bet">Indsats:</label>
-            <input type="number" id="bet" value="100" min="1" />
-            <br />
-            <button id="redBet">Rød</button>
-            <button id="blackBet">Sort</button>
-            <button id="oddBet">Ulige tal</button>
-            <button id="evenBet">Lige tal</button>
-        </div>
+    <h1>Roulette</h1>
+    <p id="balance">Balance: 1000 kr</p>
+    <div id="wheelContainer">
+        <div id="pointer"></div>
+        <div id="wheel"></div>
     </div>
-    
-    <script src="script.js"></script>
+    <button id="spinButton">Spin Hjulet</button>
+    <p>
+        Indsats: 
+        <input type="number" id="bet" value="100"> kr
+    </p>
+    <div class="bet-buttons">
+        <button id="redBet">Rød</button>
+        <button id="blackBet">Sort</button>
+        <button id="oddBet">Ulige tal</button>
+        <button id="evenBet">Lige tal</button>
+    </div>
+    <script src="roulette.js"></script>
 </body>
 </html>
