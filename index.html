@@ -4,26 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roulette</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Roulette</h1>
-    <p id="balance">Balance: 1000 kr</p>
-    <div id="wheelContainer">
-        <div id="pointer"></div>
-        <div id="wheel"></div>
+    <section class="wheel-container">
+        <canvas id="roulette-wheel" width="600" height="600"></canvas>
+        <div class="pointer"></div> <!-- Pilen -->
+        <button id="spin-btn">Spin Hjulet</button>
+    </section>
+    <div class="controls">
+        <p>Balance: <span id="balance">1000</span> kr</p>
+        <p>Indsats: <input type="number" id="bet-amount" value="100" min="0"> kr</p>
+        <button id="bet-red">Rød</button>
+        <button id="bet-black">Sort</button>
+        <button id="bet-even">Lige tal</button>
+        <button id="bet-odd">Ulige tal</button>
     </div>
-    <button id="spinButton">Spin Hjulet</button>
-    <p>
-        Indsats: 
-        <input type="number" id="bet" value="100"> kr
-    </p>
-    <div class="bet-buttons">
-        <button id="redBet">Rød</button>
-        <button id="blackBet">Sort</button>
-        <button id="oddBet">Ulige tal</button>
-        <button id="evenBet">Lige tal</button>
-    </div>
+    <div id="result-area"></div>
     <script src="script.js"></script>
 </body>
 </html>
