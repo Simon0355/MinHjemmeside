@@ -1,9 +1,18 @@
+let balance = 1000;
+let selectedBet = null;
+let betAmount = 0;
+
+const spinButton = document.getElementById('spin-btn');
+const betButtons = document.querySelectorAll('.bet-option');
+const balanceElement = document.getElementById('balance');
+const resultArea = document.getElementById('result');
+const customBetInput = document.getElementById('custom-bet');
 const wheelCanvas = document.getElementById('roulette-wheel');
 const ctx = wheelCanvas.getContext('2d');
 
 const pointerPosition = {
-    top: 152.326, // Top position for pilen
-    left: 296.111, // Venstre position for pilen
+    top: 152.326, 
+    left: 296.111, 
     bottom: 767.882,
     right: 911.667,
 };
@@ -47,6 +56,11 @@ function drawRouletteWheel() {
     ctx.translate(-wheelCanvas.width / 2, -wheelCanvas.height / 2);
 }
 
+function updateBalance(amount) {
+    balance += amount;
+    balanceElement.textContent = balance;
+}
+
 function spinWheel() {
     if (!selectedBet || !betAmount) {
         resultArea.innerHTML = `<span style="color: red;">Select a bet and amount!</span>`;
@@ -58,8 +72,8 @@ function spinWheel() {
         return;
     }
 
-    const spins = Math.floor(Math.random() * 5) + 5; // Number of full spins
-    const deg = Math.floor(Math.random() * 360); // Final position
+    const spins = Math.floor(Math.random() * 5) + 5;
+    const deg = Math.floor(Math.random() * 360);
     const rotation = deg + (360 * spins);
 
     wheelCanvas.style.transition = 'transform 3s ease-out';
@@ -95,14 +109,18 @@ function spinWheel() {
     }, 3000);
 }
 
-// Placer pilen
-function placePointer() {
-    const pointer = document.querySelector('.pointer');
-    pointer.style.position = 'absolute';
-    pointer.style.top = `${pointerPosition.top}px`;
-    pointer.style.left = `${pointerPosition.left}px`;
-}
+betButtons.forEach(button => {
+    button.addEventListener('click', function () {
+        selectedBet = this.dataset.bet;
+        betButtons.forEach(btn => btn.classList.remove('selected'));
+        this.classList.add('selected');
+    });
+});
 
-// Start alt
+customBetInput.addEventListener('input', function () {
+    betAmount = parseInt(this.value) || 0;
+});
+
+spinButton.addEventListener('click', spinWheel);
+
 drawRouletteWheel();
-placePointer();
