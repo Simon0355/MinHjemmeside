@@ -4,39 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roulette</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>🎰 Roulette 🎰</h1>
-            <div class="balance">
-                <span>Balance: <span id="balance">1000</span> kr</span>
-            </div>
-        </header>
-
-        <main>
-            <section class="wheel-container">
-                <div class="pointer"></div>
-                <canvas id="roulette-wheel" width="600" height="600"></canvas>
-                <button id="spin-btn">Spin the Wheel</button>
-            </section>
-
-            <section class="bets">
-                <h2>Place Your Bet</h2>
-                <div class="bet-options">
-                    <button class="bet-option" data-bet="red">Red</button>
-                    <button class="bet-option" data-bet="black">Black</button>
-                    <button class="bet-option" data-bet="odd">Odd</button>
-                    <button class="bet-option" data-bet="even">Even</button>
-                    <input id="custom-bet" type="number" placeholder="Bet Amount" />
-                </div>
-            </section>
-
-            <section id="result" class="result"></section>
-        </main>
+        <h1>ROULETTE</h1>
+        <p>Balance: <span id="balance">900</span> kr</p>
+        <div class="roulette-container">
+            <canvas id="roulette-wheel" width="400" height="400"></canvas>
+            <div class="pointer"></div>
+        </div>
+        <button id="spin">Spin the Wheel</button>
+        <div class="betting-options">
+            <p>Place Your Bet</p>
+            <button id="red">Red</button>
+            <button id="black">Black</button>
+            <button id="odd">Odd</button>
+            <button id="even">Even</button>
+            <input type="number" id="bet-amount" placeholder="Bet Amount">
+        </div>
+        <div id="result"></div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
