@@ -1,94 +1,118 @@
-body {
-    font-family: Arial, sans-serif;
+/* Generelle stilarter */
+* {
     margin: 0;
     padding: 0;
-    text-align: center;
-    background-color: #2c3e50;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #121212;
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .container {
+    text-align: center;
     max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+    width: 100%;
 }
 
 header {
     margin-bottom: 20px;
 }
 
+header h1 {
+    font-size: 3rem;
+    color: #ff6347;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
 .balance {
-    font-size: 1.2em;
+    font-size: 1.2rem;
+    color: #aaa;
+    margin-top: 10px;
+}
+
+main {
+    background-color: #1c1c1c;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
 }
 
 .wheel-container {
     position: relative;
-    display: inline-block;
+    margin-bottom: 30px;
+}
+
+#roulette-wheel {
+    border-radius: 50%;
+    border: 8px solid #222;
+    margin-bottom: 20px;
 }
 
 .pointer {
     position: absolute;
+    top: 152px; /* Adjusted position for the pointer */
+    left: 296px; /* Adjusted position for the pointer */
     width: 20px;
     height: 40px;
     background-color: #f1c40f;
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    top: 152.326px; /* Justeret position */
-    left: 296.111px; /* Justeret position */
     z-index: 10;
 }
 
-canvas {
-    border: 5px solid #ecf0f1;
-    border-radius: 50%;
-}
-
 button {
-    padding: 10px 20px;
-    margin-top: 20px;
-    font-size: 1em;
-    border: none;
-    background-color: #3498db;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    background-color: #e74c3c;
     color: white;
-    border-radius: 5px;
+    border: none;
+    border-radius: 25px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #2980b9;
-}
-
-.bets {
-    margin-top: 20px;
+    background-color: #c0392b;
 }
 
 .bet-options {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    margin-top: 20px;
 }
 
 .bet-option {
-    padding: 10px 20px;
+    padding: 12px 25px;
     background-color: #34495e;
-    color: white;
-    border: none;
+    font-size: 1.1rem;
     border-radius: 5px;
     cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .bet-option.selected {
-    background-color: #e74c3c;
+    background-color: #27ae60;
+    color: white;
 }
 
 input[type="number"] {
     padding: 10px;
-    width: 100px;
-    border: none;
+    margin-top: 15px;
+    width: 150px;
+    font-size: 1rem;
+    text-align: center;
     border-radius: 5px;
+    border: none;
 }
 
 .result {
+    font-size: 1.5rem;
     margin-top: 20px;
-    font-size: 1.2em;
+    color: #f1c40f;
 }
