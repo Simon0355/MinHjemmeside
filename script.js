@@ -1,4 +1,4 @@
-let balance = 1000; // Starting balance
+let balance = 1000;
 let selectedBet = null;
 let betAmount = 0;
 
@@ -10,7 +10,6 @@ const customBetInput = document.getElementById('custom-bet');
 const wheelCanvas = document.getElementById('roulette-wheel');
 const ctx = wheelCanvas.getContext('2d');
 
-// Roulette fields and colors
 const numbers = [
     { number: 1, color: '#000000' }, { number: 2, color: '#ff0000' }, { number: 3, color: '#000000' }, 
     { number: 4, color: '#ff0000' }, { number: 5, color: '#000000' }, { number: 6, color: '#ff0000' }, 
@@ -20,40 +19,46 @@ const numbers = [
     { number: 16, color: '#ff0000' }, { number: 17, color: '#000000' }, { number: 18, color: '#ff0000' }
 ];
 
-const spinAmount = 360 / numbers.length; // Angle for each segment
+const spinAmount = 360 / numbers.length;
 
-// Draw the roulette wheel
 function drawRouletteWheel() {
     ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+    const radius = 230;
     ctx.translate(wheelCanvas.width / 2, wheelCanvas.height / 2);
 
     numbers.forEach((item, index) => {
+        const startAngle = (spinAmount * index) * Math.PI / 180;
+        const endAngle = (spinAmount * (index + 1)) * Math.PI / 180;
+
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.arc(0, 0, 230, (spinAmount * index) * Math.PI / 180, (spinAmount * (index + 1)) * Math.PI / 180);
+        ctx.arc(0, 0, radius, startAngle, endAngle);
         ctx.fillStyle = item.color;
         ctx.fill();
     });
 
-    ctx.font = '16px Arial';
-    ctx.fillStyle = '#fff';
     numbers.forEach((item, index) => {
+        const angle = (spinAmount * index + spinAmount / 2) * Math.PI / 180;
+        const textRadius = 180;
+        const x = textRadius * Math.cos(angle);
+        const y = textRadius * Math.sin(angle);
+
         ctx.save();
-        ctx.rotate((spinAmount * index + spinAmount / 2) * Math.PI / 180);
-        ctx.translate(0, -200);
-        ctx.fillText(item.number, -10, 0);
+        ctx.translate(x, y);
+        ctx.rotate(angle + Math.PI / 2);
+
+        ctx.font = '20px Arial';
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(item.number, 0, 0);
+
         ctx.restore();
     });
+
     ctx.translate(-wheelCanvas.width / 2, -wheelCanvas.height / 2);
 }
 
-// Update balance
-function updateBalance(amount) {
-    balance += amount;
-    balanceElement.textContent = balance;
-}
-
-// Spin the wheel
 function spinWheel() {
     if (!selectedBet || !betAmount) {
         resultArea.innerHTML = `<span style="color: red;">Select a bet and amount!</span>`;
@@ -64,21 +69,19 @@ function spinWheel() {
         return;
     }
 
-    const spins = Math.floor(Math.random() * 5) + 5; // Number of full spins
-    const deg = Math.floor(Math.random() * 360); // Final position
+    const spins = Math.floor(Math.random() * 5) + 5;
+    const deg = Math.floor(Math.random() * 360);
     const rotation = deg + (360 * spins);
 
     wheelCanvas.style.transition = 'transform 3s ease-out';
     wheelCanvas.style.transform = `rotate(${rotation}deg)`;
 
-    // Calculate result
     setTimeout(() => {
         const actualDeg = rotation % 360;
         const index = Math.floor(actualDeg / spinAmount);
         const result = numbers[index];
         resultArea.innerHTML = `Result: <strong>${result.number}</strong> (${result.color === '#ff0000' ? 'Red' : 'Black'})`;
 
-        // Check bet and update balance
         let win = false;
         if ((selectedBet === 'red' && result.color === '#ff0000') ||
             (selectedBet === 'black' && result.color === '#000000') ||
@@ -88,14 +91,13 @@ function spinWheel() {
         }
 
         if (win) {
-            updateBalance(betAmount); // Winning doubles the bet amount
+            updateBalance(betAmount);
             resultArea.innerHTML += `<br><span style="color: green;">You won ${betAmount} kr!</span>`;
         } else {
-            updateBalance(-betAmount); // Losing subtracts the bet amount
+            updateBalance(-betAmount);
             resultArea.innerHTML += `<br><span style="color: red;">You lost ${betAmount} kr!</span>`;
         }
 
-        // Reset bet
         selectedBet = null;
         betAmount = 0;
         betButtons.forEach(btn => btn.classList.remove('selected'));
@@ -103,7 +105,11 @@ function spinWheel() {
     }, 3000);
 }
 
-// Handle bet selection
+function updateBalance(amount) {
+    balance += amount;
+    balanceElement.textContent = balance;
+}
+
 betButtons.forEach(button => {
     button.addEventListener('click', function () {
         selectedBet = this.dataset.bet;
@@ -112,13 +118,10 @@ betButtons.forEach(button => {
     });
 });
 
-// Handle bet amount
 customBetInput.addEventListener('input', function () {
     betAmount = parseInt(this.value) || 0;
 });
 
-// Start spin
 spinButton.addEventListener('click', spinWheel);
 
-// Draw the roulette wheel initially
 drawRouletteWheel();
