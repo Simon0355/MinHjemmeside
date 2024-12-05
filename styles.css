@@ -56,15 +56,17 @@ main {
     margin-bottom: 20px;
 }
 
+/* Pilen til roulettehjulet */
 .pointer {
     position: absolute;
-    top: 152px; /* Adjusted position for the pointer */
-    left: 296px; /* Adjusted position for the pointer */
-    width: 20px;
-    height: 40px;
-    background-color: #f1c40f;
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    z-index: 10;
+    top: 162px; /* Justeret for at placere pilen korrekt */
+    left: 296px; /* Justeret for at placere pilen korrekt */
+    width: 0; 
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid #ffcc00; /* Farve på pilen */
+    z-index: 10; /* Sørg for, at den er oven på hjulet */
 }
 
 button {
