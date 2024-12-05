@@ -27,6 +27,7 @@ function drawRouletteWheel() {
     ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
     ctx.translate(wheelCanvas.width / 2, wheelCanvas.height / 2);
 
+    // Draw each segment of the wheel
     numbers.forEach((item, index) => {
         ctx.beginPath();
         ctx.moveTo(0, 0);
@@ -35,15 +36,17 @@ function drawRouletteWheel() {
         ctx.fill();
     });
 
-    ctx.font = '16px Arial';
-    ctx.fillStyle = '#fff';
+    // Draw the numbers on the wheel
+    ctx.font = 'bold 16px Arial'; // Tyk font for bedre synlighed
+    ctx.fillStyle = '#fff'; // Hvid tekstfarve
     numbers.forEach((item, index) => {
         ctx.save();
         ctx.rotate((spinAmount * index + spinAmount / 2) * Math.PI / 180);
-        ctx.translate(0, -200);
-        ctx.fillText(item.number, -10, 0);
+        ctx.translate(0, -200); // Juster denne værdi for at flytte tallene op eller ned
+        ctx.fillText(item.number, -10, 0); // Juster -10 for centreret tekst
         ctx.restore();
     });
+
     ctx.translate(-wheelCanvas.width / 2, -wheelCanvas.height / 2);
 }
 
